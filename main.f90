@@ -7,7 +7,7 @@ program elements
   integer, parameter :: N = 50, max_iter = 10
   real(8), parameter :: pre = 1D-2
   real(8), dimension(:,:), allocatable :: Ak, XY
-  real(8), dimension(:), allocatable :: Z, U, delta_U, bk
+  real(8), dimension(:), allocatable :: U, delta_U, bk
   integer, dimension(:,:), allocatable :: C
   integer :: t, t1, t2, t3, i, k
   real(8) :: x, y, h
@@ -16,7 +16,6 @@ program elements
   ! Alloue l'espace mémoire pour les matrices
   allocate(C(2 * N**2, 3), &
        XY((N + 1)**2, 2), &
-       Z((N + 1)**2), &
        U((N + 1)**2), &
        delta_U((N + 1)**2), &
        Ak((N + 1)**2, (N + 1)**2), &
@@ -26,26 +25,23 @@ program elements
   Ak = 0D0
   bk = 0D0
   XY = 0D0
-  Z = 0D0
   C = 0
   U = 0D0
   delta_U = 0D0
   h = (max - min) / N
 
-  !! correspondance des indices entre la matrice Ak et les matrices C, XY et Z
-  ! Ak =
+  !! correspondance des indices du domaine et les indices des matrices C, XY et U
+  ! Omega =
   ! ( 1  . . .  N*(N+1)+1  )
   ! ( .  . . .      .      )
   ! ( .  . . .      .      )
   ! ( .  . . .      .      )
   ! (N+1 . . . (N+1)*(N+1) )
-  ! Ak(i,j)=(i-1)*(N+1)+j
 
   !! Coeur du programme
   !call plotgraph(N, min, max, Ak)
   call make_connect(C, N)
   call make_XY(XY, N, min, h)
-  call make_Z(Z, N, Ak)
   !call aff_mat_int(C, 2 * N**2, 3)
   !call aff_mat_real(XY, (N + 1)**2, 2)
   !call aff_vect_real(Z, (N + 1)**2)
@@ -167,21 +163,6 @@ contains
        end do
     end do
   end subroutine make_XY
-
-  ! Créé la matrice des coordonnées z
-  subroutine make_Z(Z, N, mat)
-    implicit none
-    real(8), dimension(:), intent(inout) :: Z
-    real(8), dimension(:,:), intent(in) :: mat
-    integer, intent(in) :: N
-    integer :: i, j
-
-    do i = 1, N+1
-       do j = 1, N+1
-          Z((i-1) * (N+1) + j) = mat(i, j)
-       end do
-    end do
-  end subroutine make_Z
 
   ! Créé la matrice d'itération Ak temporaire
   ! avant application des conditions de bords
