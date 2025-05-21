@@ -1,3 +1,5 @@
+### Makefile du programme
+
 # Compilateur
 CF := gfortran
 
@@ -10,11 +12,11 @@ exe : main.f90 tools.o functions.o method.o
 
 functions.o : functions.f90 tools.o
 	@echo 'Compilation de functions.f90 ...'
-	$(CF) -o functions.o -c functions.f90 tools.o
+	$(CF) -o functions.o -c functions.f90
 
 method.o : method.f90 tools.o
 	@echo 'Compilation de method.f90 ...'
-	$(CF) -o method.o -c method.f90 tools.o
+	$(CF) -o method.o -c method.f90
 
 tools.o : tools.f90
 	@echo 'Compilation de tools.f90 ...'

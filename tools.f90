@@ -1,3 +1,5 @@
+!!! Module contenant les outils pour le calcul matriciel et
+!   les fonctions de calcul d'aire.
 module tools
 contains  
   !! Subroutines utilisées pour le calcul matriciel
@@ -124,7 +126,7 @@ contains
     scal2 = u(1) * v(1) + u(2) * v(2)
   end function scal2
   
-  ! Calcul l'aire d'un triangle avec les coordonnées de ses 3 sommets
+  ! Calcul l'aire d'un triangle avec les coordonnées de ses 3 sommets de R3
   real(8) function area(Z, con, XY)
     implicit none
     real(8), dimension(:,:), intent(in) :: XY

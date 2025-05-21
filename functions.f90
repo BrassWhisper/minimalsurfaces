@@ -1,34 +1,90 @@
 module functions
   use tools
   implicit none
-  real(8), parameter :: min = -1D0, max = 1D0
+  real(8), parameter :: min = -1D0, max = 1D0, pi = 3.14159265358
 contains
-  !!! Valeur x^2 ou y^2 sur le carré
+  !!! Valeur cos(pi * x) sur up et down, cos(pi * y) sur left et right
   ! Calcule la coté haut du domaine carré
   real(8) function up(x, y)
     real(8), intent(in) :: x, y
-    up = x**2 + y**2
+    up = cos(pi * x)
   end function up
   
   ! Calcule la coté bas du domaine carré
   real(8) function down(x, y)
     real(8), intent(in) :: x, y
-    down = x**2 + y**2
+    down = cos(pi * x)
   end function down
 
   ! Calcule la coté gauche du domaine carré
   real(8) function left(x, y)
     real(8), intent(in) :: x, y
-    left = x**2 + y**2
+    left = cos(pi * y)
   end function left
 
   ! Calcule la coté doit du domaine carré
   real(8) function right(x, y)
     real(8), intent(in) :: x, y
-    right = x**2 + y**2
+    right = cos(pi * y)
   end function right
 
-  !!! Valeur 0 sur le carré
+  !!! Valeur cos(pi * x) + sin(pi * y) sur le carré
+  ! ! Calcule la coté haut du domaine carré
+  ! real(8) function up(x, y)
+  !   real(8), intent(in) :: x, y
+  !   up = cos(pi * x) + sin(pi * y)
+  ! end function up
+  
+  ! ! Calcule la coté bas du domaine carré
+  ! real(8) function down(x, y)
+  !   real(8), intent(in) :: x, y
+  !   down = cos(pi * x) + sin(pi * y)
+  ! end function down
+
+  ! ! Calcule la coté gauche du domaine carré
+  ! real(8) function left(x, y)
+  !   real(8), intent(in) :: x, y
+  !   left = cos(pi * x) + sin(pi * y)
+  ! end function left
+
+  ! ! Calcule la coté doit du domaine carré
+  ! real(8) function right(x, y)
+  !   real(8), intent(in) :: x, y
+  !   right = cos(pi * x) + sin(pi * y)
+  ! end function right
+
+  
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!! Valeur x^2 + y^2 sur le carré !!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! ! Calcule la coté haut du domaine carré
+  ! real(8) function up(x, y)
+  !   real(8), intent(in) :: x, y
+  !   up = x**2 + y**2
+  ! end function up
+  
+  ! ! Calcule la coté bas du domaine carré
+  ! real(8) function down(x, y)
+  !   real(8), intent(in) :: x, y
+  !   down = x**2 + y**2
+  ! end function down
+
+  ! ! Calcule la coté gauche du domaine carré
+  ! real(8) function left(x, y)
+  !   real(8), intent(in) :: x, y
+  !   left = x**2 + y**2
+  ! end function left
+
+  ! ! Calcule la coté doit du domaine carré
+  ! real(8) function right(x, y)
+  !   real(8), intent(in) :: x, y
+  !   right = x**2 + y**2
+  ! end function right
+
+  
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!! Valeur 0 sur le carré !!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! ! Calcule la coté haut du domaine carré
   ! real(8) function up(x, y)
   !   real(8), intent(in) :: x, y
@@ -53,6 +109,7 @@ contains
   !   right = 0D0
   ! end function right
 
+  !! Fonctions phi et d_phi de la base de V_h
   ! Calcule la fonction phi_i
   real(8) function phi_i(x, y, i, XY, h)
     real(8), intent(in) :: x, y, h
@@ -147,12 +204,6 @@ contains
     line = floor((x - min) / h)
     column = floor((y - min) / h)
 
-    ! print*, line, column
-    ! print*, x, y, min
-    ! print*, h, x - min, y - min
-    ! print*, (x - min) / h, (y - min) / h
-    ! print*, (x - line * h + y - column * h - 2 * min), h
-    
     if ((x - line * h + y - column * h - 2 * min) > h) then
        find_triangle = 2 * (N * line + column) + 2
     else
@@ -179,6 +230,7 @@ contains
   end function d_u
 
   ! Fonction Ak_c pour former la matrice d'itération
+  ! Calcle la matrice 2x2 à l'intérieur de l'intégrale
   function Ak_c(x, y, U, C, XY, min, h, N)
     implicit none
     real(8), dimension(2,2) :: Ak_c
@@ -235,6 +287,7 @@ contains
   end function bk_i
   
   ! Calcule une fonction test
+  ! Utilisée pour tester l'affichage graphique
   real(8) function graph(x, y)
     real(8), intent(in) :: x, y
 

@@ -1,3 +1,4 @@
+!!! Module contenant les méthodes itératives de résolution d'un système AX = B
 module method
   use tools
   implicit none
@@ -75,17 +76,16 @@ contains
   end function iteration_methode
   
   ! Méthode de Jacobi pour un système AX = B
-  function jacobi(A, X0, B, N, pre)
+  function jacobi(A, X0, B, N, pre, max_it)
     implicit none
     ! Arguments de la méthode
-    integer, intent(in) :: N
+    integer, intent(in) :: N, max_it
     real(8), dimension(N, N), intent(in) :: A
     real(8), dimension(N), intent(in) :: X0, B
     real(8), intent(in) :: pre
     ! Résultat de la méthode
     real(8), dimension(N) :: jacobi
     ! Variables
-    integer, parameter :: max_it = 1000
     integer :: i
     real(8), dimension(N) :: Xk, Xk1, C
     real(8), dimension(N, N) :: G, D, E, F
@@ -104,17 +104,16 @@ contains
   end function jacobi
 
   ! Méthode de Gauss-Seidel
-  function gaussseidel(A, X0, B, N, pre)
+  function gaussseidel(A, X0, B, N, pre, max_it)
     implicit none
     ! Arguments de la méthode
-    integer, intent(in) :: N
+    integer, intent(in) :: N, max_it
     real(8), dimension(N, N), intent(in) :: A
     real(8), dimension(N), intent(in) :: X0, B
     real(8), intent(in) :: pre
     ! Résultat de la méthode
     real(8), dimension(N) :: gaussseidel
     ! Variables
-    integer, parameter :: max_it = 100
     integer :: i
     real(8), dimension(N) :: Xk, Xk1, C
     real(8), dimension(N, N) :: G, D, E, F
@@ -131,17 +130,16 @@ contains
   end function gaussseidel
 
   ! Méthode de relaxation
-  function relaxation(A, X0, B, N, pre, omega)
+  function relaxation(A, X0, B, N, pre, omega, max_it)
     implicit none
     ! Arguments de la méthode
-    integer, intent(in) :: N
+    integer, intent(in) :: N, max_it
     real(8), dimension(N, N), intent(in) :: A
     real(8), dimension(N), intent(in) :: X0, B
     real(8), intent(in) :: pre, omega
     ! Résultat de la méthode
     real(8), dimension(N) :: relaxation
     ! Variables
-    integer, parameter :: max_it = 1000
     integer :: i
     real(8), dimension(N) :: Xk, Xk1, C
     real(8), dimension(N, N) :: G, D, E, F
