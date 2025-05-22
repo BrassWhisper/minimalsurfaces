@@ -1,19 +1,19 @@
 !!! Fichier principal du programme
-! Exécute l'itération de la méthode
+! Exécute l'itération de la méthode des éléments finis
 program elements
   use tools
   use functions
   use method
   implicit none
   !! Variables
-  integer, parameter :: N = 30, iter = 10
-  real(8), parameter :: pre = 1D-5
+  integer, parameter :: N = 30, max_iter = 20
+  real(8), parameter :: pre = 1D-2, threshold = 1D-1
+  character(len = 10), parameter :: filename='dataplot01'
   real(8), dimension(:,:), allocatable :: Ak, XY
   real(8), dimension(:), allocatable :: U, delta_U, bk
   integer, dimension(:,:), allocatable :: C
-  integer :: t, t1, t2, t3, i, k
-  real(8) :: x, y, h
-  real(8), dimension(2) :: d1, d2, d3
+  integer :: k
+  real(8) :: h
   
   !! correspondance des indices des points du domaine et les indices des matrices C, XY et U
   ! Omega =
@@ -49,20 +49,24 @@ program elements
   !call aff_mat_real(XY, (N + 1)**2, 2
   !call aff_vect_real(U, (N + 1)**2)
   
-  print*, "Area :", full_area(C, XY, U, N)
+  print*, "Area at iteration :", 0, full_area(C, XY, U, N)
 
-  do k = 1, iter
+  do k = 1, max_iter
      call make_Ak_temp(Ak, U, C, XY, min, h, N)
      call make_bk_temp(bk, U, C, XY, min, h, N)
      call make_Ak_bk(Ak, bk, XY, N)
      !delta_U = jacobi(Ak, U, bk, (N + 1)**2, pre, 300)
      delta_U = gaussseidel(Ak, U, bk, (N + 1)**2, pre, 300)
      U = U + delta_U
+     if (norme2(delta_U, (N + 1)**2) < threshold) then
+        print*, "Threshold reached"
+        exit
+     end if
      print*, "Area at iteration ", k, full_area(C, XY, U, N)
   end do
   
   ! Ecris les valeurs de U dans un fichier
-  call plotgraph_U(U, XY, N, 'dataplotU6')
+  call plotgraph_U(U, XY, N, filename)
   
 contains
   ! Ecrit les points de U dans un fichier pour générer un graphique
@@ -82,6 +86,7 @@ contains
        end if
     end do
     close(10)
+    print*, "Data written to ", filename
   end subroutine plotgraph_U
 
   ! Ecrit les points de la fonction graph dans un fichier
@@ -151,7 +156,7 @@ contains
     real(8) :: area, xc, yc
     real(8), dimension(2,2) :: Akc
     
-    area = 1D0 / h**2 ! Aire d'un triangle
+    area = h**2 / 2D0 ! Aire d'un triangle
     Ak = 0D0
     ! Boucle d'itération pour tous les triangles
     do t = 1, 2 * N**2, 2
@@ -219,7 +224,7 @@ contains
     integer :: t, t1
     real(8) :: area, xc, yc
     
-    area = 1D0 / h**2 ! Aire d'un triangle
+    area = h**2 / 2D0 ! Aire d'un triangle
     bk = 0D0
     ! Boucle d'itération pour tous les triangles
     do t = 1, 2 * N**2, 2
@@ -294,7 +299,6 @@ contains
              end if
           end if
        end if
-       print*, i, U(i)
-  end do
+    end do
   end subroutine init_U
 end program elements

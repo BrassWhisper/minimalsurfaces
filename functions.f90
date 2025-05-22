@@ -1,34 +1,105 @@
+!!! Module contenant les fonctions du bord du domaine ainsi que les fonctions
+!   phi_i, les fonctions d'aire, de calcul de A_k et b_k...
 module functions
   use tools
   implicit none
   real(8), parameter :: min = -1D0, max = 1D0, pi = 3.14159265358
 contains
-  !!! Valeur cos(pi * x) sur up et down, cos(pi * y) sur left et right
+  ! up    ! [min,max]x{min}
+  ! down  : [min,max]x{max}
+  ! left  : {min}x[min,max]
+  ! right : {max}x[min,max]
+  
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!! Demi cercle sur up et down, 0 sinon !!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! min = -1D0, max = 1D0
   ! Calcule la coté haut du domaine carré
   real(8) function up(x, y)
     real(8), intent(in) :: x, y
-    up = cos(pi * x)
+    up = sqrt(1D0 - x**2)
   end function up
   
   ! Calcule la coté bas du domaine carré
   real(8) function down(x, y)
     real(8), intent(in) :: x, y
-    down = cos(pi * x)
+    down = sqrt(1D0 - x**2)
   end function down
 
   ! Calcule la coté gauche du domaine carré
   real(8) function left(x, y)
     real(8), intent(in) :: x, y
-    left = cos(pi * y)
+    left = 0D0
   end function left
 
   ! Calcule la coté doit du domaine carré
   real(8) function right(x, y)
     real(8), intent(in) :: x, y
-    right = cos(pi * y)
+    right = 0D0
   end function right
+  
 
-  !!! Valeur cos(pi * x) + sin(pi * y) sur le carré
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!! Valeur x sur up et down, 0 sur left et 1 sur right !!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! min = 0D0, max = 1D0
+  ! ! Calcule la coté haut du domaine carré
+  ! real(8) function up(x, y)
+  !   real(8), intent(in) :: x, y
+  !   up = x
+  ! end function up
+  
+  ! ! Calcule la coté bas du domaine carré 
+  ! real(8) function down(x, y)
+  !   real(8), intent(in) :: x, y
+  !   down = x
+  ! end function down
+
+  ! ! Calcule la coté gauche du domaine carré
+  ! real(8) function left(x, y)
+  !   real(8), intent(in) :: x, y
+  !   left = 0D0
+  ! end function left
+
+  ! ! Calcule la coté doit du domaine carré
+  ! real(8) function right(x, y)
+  !   real(8), intent(in) :: x, y
+  !   right = 1D0
+  ! end function right
+
+
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!! Valeur cos(pi * x) sur up et down, cos(pi * y) sur left et right !!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! ! min = -1D0, max = 1D0
+  ! ! Calcule la coté haut du domaine carré
+  ! real(8) function up(x, y)
+  !   real(8), intent(in) :: x, y
+  !   up = cos(pi * x)
+  ! end function up
+  
+  ! ! Calcule la coté bas du domaine carré
+  ! real(8) function down(x, y)
+  !   real(8), intent(in) :: x, y
+  !   down = cos(pi * x)
+  ! end function down
+
+  ! ! Calcule la coté gauche du domaine carré
+  ! real(8) function left(x, y)
+  !   real(8), intent(in) :: x, y
+  !   left = cos(pi * y)
+  ! end function left
+
+  ! ! Calcule la coté doit du domaine carré
+  ! real(8) function right(x, y)
+  !   real(8), intent(in) :: x, y
+  !   right = cos(pi * y)
+  ! end function right
+
+  
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!! Valeur cos(pi * x) + sin(pi * y) sur le carré !!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! ! Calcule la coté haut du domaine carré
   ! real(8) function up(x, y)
   !   real(8), intent(in) :: x, y

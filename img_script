@@ -1,0 +1,8 @@
+# Script pour générer une image à partir d'un 'dataplotXX'
+
+set terminal png size 500, 500 # Défini le type d'output
+
+set output 'image/'.ARG1.'.png' # Défini le fichier de sortie
+set view 69, 60, 1, 1 # Défini le point de vu
+splot ARG1 with surface notitle # Dessine
+print 'Image enregistrée'

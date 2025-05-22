@@ -1,0 +1,11 @@
+# Script pour générer plusieurs images pour faire un GIF animé
+
+set terminal png size 500, 500 # Défini le type d'output
+nbimg = 17 # Défini le nombre d'images
+
+do for [i = 1:nbimg] {
+set output 'image/'.ARG1.i.'.png' # Défini le fichier de sortie
+set view 69, i*360/nbimg, 1, 1 # Défini le point de vu
+splot ARG1 with surface notitle # Dessine
+print 'Image '.i.' enregistrée'
+}
